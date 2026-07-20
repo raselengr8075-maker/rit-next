@@ -1,0 +1,1 @@
+export default function StatsSection(){return <section className="stats"><div className="container statsGrid">{[["4","Core disciplines"],["6+","Innovation projects"],["6","Digital products"],["1","Shared purpose"]].map(s=><div key={s[1]}><strong>{s[0]}</strong><span>{s[1]}</span></div>)}</div></section>}

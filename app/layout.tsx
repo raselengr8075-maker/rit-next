@@ -2,17 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rasel Innovation & Technology (RIT)",
-  description:
-    "Rasel Innovation & Technology — agriculture, engineering, software and research innovation from Bangladesh.",
+  title: "RIT | Rasel Innovation & Technology",
+  description: "Rasel Innovation & Technology creates practical agricultural, engineering, software and research solutions from Bangladesh.",
+  keywords: ["RIT", "agriculture technology", "engineering", "Bangladesh", "software", "innovation"],
+  openGraph: { title: "Rasel Innovation & Technology (RIT)", description: "Practical innovation for a more capable future.", type: "website" },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" suppressHydrationWarning><body>{children}</body></html>;
 }
