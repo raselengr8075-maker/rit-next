@@ -1,0 +1,1 @@
+export default function DataTable({title}:{title:string}){return <div className="adminCard"><h2>{title}</h2><p>Connect Supabase and run the supplied schema to manage records here.</p><table><thead><tr><th>Title</th><th>Status</th><th>Published</th><th>Actions</th></tr></thead><tbody><tr><td colSpan={4}>No database records loaded.</td></tr></tbody></table></div>}

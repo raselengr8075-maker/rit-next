@@ -1,0 +1,1 @@
+export default function AdminDataTable({headers,children,caption}:{headers:string[];children:React.ReactNode;caption:string}){return <div className="adminDataTable"><table><caption className="srOnly">{caption}</caption><thead><tr>{headers.map(h=><th key={h} scope="col">{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>}

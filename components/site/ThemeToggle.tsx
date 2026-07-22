@@ -1,0 +1,3 @@
+'use client';
+import{Moon,Sun}from"lucide-react";import{useEffect,useState}from"react";
+export default function ThemeToggle(){const[dark,setDark]=useState(false);useEffect(()=>{const value=localStorage.getItem("rit-theme")==="dark";setDark(value);document.documentElement.classList.toggle("dark",value);document.body.classList.toggle("dark",value)},[]);function toggle(){const next=!dark;setDark(next);localStorage.setItem("rit-theme",next?"dark":"light");document.documentElement.classList.toggle("dark",next);document.body.classList.toggle("dark",next)}return <button className="site-icon-button" onClick={toggle} aria-label={dark?"Use light theme":"Use dark theme"}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button>}

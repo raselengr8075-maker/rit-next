@@ -1,0 +1,1 @@
+import{published,one}from"./repository";import type{Resource}from"@/types/content";export const fallbackResources:Resource[]=[];export const getResources=()=>published<Resource>("resources",fallbackResources);export const getResource=(slug:string)=>one<Resource>("resources",slug,fallbackResources);

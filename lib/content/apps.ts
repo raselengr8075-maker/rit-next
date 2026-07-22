@@ -1,0 +1,1 @@
+import{fallbackApps}from"@/data/fallback-content";import{one,published}from"./repository";export const getApps=()=>published("apps",fallbackApps);export const getApp=(slug:string)=>one("apps",slug,fallbackApps);

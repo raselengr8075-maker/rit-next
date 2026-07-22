@@ -1,0 +1,1 @@
+import{fallbackAchievements,fallbackTimeline}from"@/data/fallback-content";import{published}from"./repository";export const getAchievements=()=>published("achievements",fallbackAchievements);export const getTimeline=()=>published("timeline_events",fallbackTimeline);

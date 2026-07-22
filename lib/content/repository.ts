@@ -1,0 +1,4 @@
+import"server-only";import{createClient}from"@/lib/supabase/server";import type{BaseContent}from"@/types/content";
+const camel=(r:Record<string,unknown>)=>{const out:Record<string,unknown>={};for(const[k,v]of Object.entries(r))out[k.replace(/_([a-z])/g,(_,c:string)=>c.toUpperCase())]=v;return out};
+export async function published<T extends BaseContent>(table:string,fallback:T[]):Promise<T[]>{try{const db=await createClient();if(!db)return fallback;const{data,error}=await db.from(table).select("*").eq("published",true).order("sort_order");if(error||!data?.length)return fallback;return data.map(r=>camel(r as Record<string,unknown>)as unknown as T)}catch{return fallback}}
+export async function one<T extends BaseContent>(table:string,slug:string,fallback:T[]):Promise<T|undefined>{const items=await published(table,fallback);return items.find(x=>x.slug===slug)}

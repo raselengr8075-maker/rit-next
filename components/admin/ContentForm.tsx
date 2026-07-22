@@ -1,0 +1,1 @@
+export default function ContentForm(){return <form className="form"><label>English title<input name="titleEn" required/></label><label>Bangla title<input name="titleBn"/></label><label>Summary<textarea name="summaryEn" rows={4}/></label><button className="btn primary">Save draft</button></form>}

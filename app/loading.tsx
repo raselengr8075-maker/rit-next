@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="site-section" aria-busy="true" aria-label="Loading content"><div className="site-container"><div className="skeleton-line wide"/><div className="skeleton-line"/><div className="card-grid three-cols">{[1,2,3].map(x=><div className="skeleton-card" key={x}/>)}</div></div></main>}

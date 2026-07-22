@@ -1,0 +1,1 @@
+'use client';export default function PublishToggle({published,onChange}:{published:boolean;onChange:(v:boolean)=>void}){return <label><input type="checkbox" checked={published} onChange={e=>onChange(e.target.checked)}/> Published</label>}

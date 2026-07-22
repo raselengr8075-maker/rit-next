@@ -1,0 +1,1 @@
+'use client';import AdminSidebar from"./AdminSidebar";export default function AdminMobileNav({open,onClose}:{open:boolean;onClose:()=>void}){if(!open)return null;return <div className="mobileNavBackdrop" onMouseDown={e=>e.target===e.currentTarget&&onClose()}><AdminSidebar collapsed={false} onCollapse={()=>{}} mobile onClose={onClose}/></div>}

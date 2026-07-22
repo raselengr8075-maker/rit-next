@@ -1,0 +1,1 @@
+'use client';export default function DeleteConfirmDialog({onConfirm}:{onConfirm:()=>void}){return <button className="danger" onClick={()=>confirm("Delete this item? This cannot be undone.")&&onConfirm()}>Delete</button>}

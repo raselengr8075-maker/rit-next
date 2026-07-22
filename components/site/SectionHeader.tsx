@@ -1,0 +1,2 @@
+import BilingualText from "./BilingualText";
+export default function SectionHeader({ eyebrowEn, eyebrowBn, titleEn, titleBn, textEn, textBn }: { eyebrowEn: string; eyebrowBn: string; titleEn: string; titleBn: string; textEn?: string; textBn?: string }) { return <header className="site-section-header"><span className="site-eyebrow"><BilingualText en={eyebrowEn} bn={eyebrowBn}/></span><h2><BilingualText en={titleEn} bn={titleBn}/></h2>{textEn && textBn && <p><BilingualText en={textEn} bn={textBn}/></p>}</header>; }

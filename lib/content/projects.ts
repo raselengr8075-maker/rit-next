@@ -1,0 +1,1 @@
+import{fallbackProjects}from"@/data/fallback-content";import{one,published}from"./repository";export const getProjects=()=>published("projects",fallbackProjects);export const getProject=(slug:string)=>one("projects",slug,fallbackProjects);

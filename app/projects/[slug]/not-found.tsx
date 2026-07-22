@@ -1,0 +1,1 @@
+import Link from"next/link";export default function NotFound(){return <main className="pageMain container emptyState"><h1>Project not found</h1><p>This project is unavailable or unpublished.</p><Link className="btn primary" href="/projects">Back to projects</Link></main>}

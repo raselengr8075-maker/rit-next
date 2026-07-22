@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export function pageMetadata(title: string, description: string, path: string, image?: string): Metadata { const canonical = new URL(path, siteUrl).toString(); return { title, description, alternates: { canonical }, openGraph: { title, description, url: canonical, siteName: "Rasel Innovation & Technology", type: "website", ...(image ? { images: [{ url: image }] } : {}) }, twitter: { card: image ? "summary_large_image" : "summary", title, description, ...(image ? { images: [image] } : {}) } }; }

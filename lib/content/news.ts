@@ -1,0 +1,1 @@
+import{fallbackNews}from"@/data/fallback-content";import{one,published}from"./repository";export const getNews=()=>published("news_articles",fallbackNews);export const getArticle=(slug:string)=>one("news_articles",slug,fallbackNews);

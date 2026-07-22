@@ -1,0 +1,1 @@
+import{Inbox}from"lucide-react";export default function AdminEmptyState({title="Nothing here yet",description="Create the first item to get started.",action}:{title?:string;description?:string;action?:React.ReactNode}){return <div className="adminEmpty"><Inbox size={30}/><h3>{title}</h3><p>{description}</p>{action}</div>}

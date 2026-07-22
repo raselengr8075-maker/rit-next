@@ -1,0 +1,3 @@
+'use client';
+import{Languages}from"lucide-react";import{useEffect,useState}from"react";
+export default function LanguageSwitcher(){const[lang,setLang]=useState<"en"|"bn">("en");useEffect(()=>{const saved=localStorage.getItem("rit-lang")==="bn"?"bn":"en";setLang(saved);document.documentElement.dataset.language=saved;document.documentElement.lang=saved},[]);function toggle(){const next=lang==="en"?"bn":"en";setLang(next);localStorage.setItem("rit-lang",next);document.documentElement.dataset.language=next;document.documentElement.lang=next}return <button className="site-icon-button language-button" onClick={toggle} aria-label={lang==="en"?"বাংলা ভাষায় দেখুন":"View in English"}><Languages size={18}/><span>{lang==="en"?"বাংলা":"EN"}</span></button>}
