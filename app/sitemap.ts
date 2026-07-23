@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://raselinnovation.com";
+  const baseUrl = "https://www.raselinnovation.com";
 
   const routes = [
     "",
@@ -28,6 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
-    priority: route === "" ? 1.0 : 0.8,
+    priority: route === "" ? 1 : 0.8,
   }));
 }
