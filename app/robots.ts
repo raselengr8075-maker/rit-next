@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://raselinnovation.com/sitemap.xml",
+    sitemap: "https://www.raselinnovation.com/sitemap.xml",
   };
 }
