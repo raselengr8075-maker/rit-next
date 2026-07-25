@@ -1,30 +1,34 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import CorporateHeader from "@/components/site/CorporateHeader";
 import CorporateFooter from "@/components/site/CorporateFooter";
 import Container from "@/components/site/Container";
 import BilingualText from "@/components/site/BilingualText";
 import SectionHeader from "@/components/site/SectionHeader";
-import ProjectCard from "@/components/site/ProjectCard";
 import AppCard from "@/components/site/AppCard";
 import NewsCard from "@/components/site/NewsCard";
 import ServiceCard from "@/components/site/ServiceCard";
 import StructuredData from "@/components/site/StructuredData";
 import ContactSection from "@/components/ContactSection";
-import HeroInnovationVisual from "@/components/home/HeroInnovationVisual";
-import VerifiedMetrics from "@/components/home/VerifiedMetrics";
 import FounderVisual from "@/components/home/FounderVisual";
-import ResearchJourney from "@/components/research/ResearchJourney";
 import EditorialTimeline from "@/components/timeline/EditorialTimeline";
 import EngineeringIcon from "@/components/ui/EngineeringIcon";
-import { getProjects } from "@/lib/content/projects";
+import VerifiedStatisticsSection from "@/components/home/VerifiedStatisticsSection";
+import FeaturedMachinesSection from "@/components/home/FeaturedMachinesSection";
+import EngineeringGallerySection from "@/components/home/EngineeringGallerySection";
+import ResearchJourneySection from "@/components/home/ResearchJourneySection";
+import PartnersSection from "@/components/home/PartnersSection";
 import { getApps } from "@/lib/content/apps";
 import { getNews } from "@/lib/content/news";
 import { getFounder } from "@/lib/content/founder";
 import { getAchievements } from "@/lib/content/achievements";
-import { getPartners } from "@/lib/content/partners";
 import { getPublicSiteSettings } from "@/lib/content/site-settings";
-import { divisions, processSteps, services } from "@/lib/site/content";
+import { getVerifiedHomeMetrics } from "@/lib/data/home-statistics";
+import { getFeaturedMachines } from "@/lib/data/featured-machines";
+import { getEngineeringGallery } from "@/lib/data/engineering-gallery";
+import { getPublicPartners } from "@/lib/data/public-partners";
+import { divisions, services } from "@/lib/site/content";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/structured-data";
 
 const contactText = {
@@ -57,16 +61,17 @@ const trustItems = [
 ] as const;
 
 export default async function Home() {
-  const [projects, apps, news, founder, achievements, partners, siteSettings] = await Promise.all([
-    getProjects(),
+  const [apps, news, founder, achievements, siteSettings, verifiedMetrics, featuredMachines, engineeringGallery, partners] = await Promise.all([
     getApps(),
     getNews(),
     getFounder(),
     getAchievements(),
-    getPartners(),
     getPublicSiteSettings(),
+    getVerifiedHomeMetrics(),
+    getFeaturedMachines(),
+    getEngineeringGallery(),
+    getPublicPartners(),
   ]);
-  const featuredProjects = projects.filter((item) => item.featured).slice(0, 3);
   const featuredApps = apps.filter((item) => item.featured).slice(0, 3);
   const founderName = founder.name || founder.titleEn || "Md. Rasel Ahmed";
 
@@ -78,8 +83,18 @@ export default async function Home() {
         <StructuredData data={websiteJsonLd} />
 
         <section className="corporate-hero">
+          <Image
+            className="hero-banner-image object-cover"
+            src="/images/hero/rit-hero-background.png"
+            alt="RIT innovation and engineering research campus"
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className="hero-banner-overlay" aria-hidden="true" />
+          <div className="hero-bottom-transition" aria-hidden="true" />
           <Container className="hero-layout">
-            <div>
+            <div className="hero-content">
               <span className="site-eyebrow">
                 <BilingualText en="Rasel Innovation & Technology" bn="রাসেল ইনোভেশন অ্যান্ড টেকনোলজি" />
               </span>
@@ -102,12 +117,11 @@ export default async function Home() {
                 <Link className="site-button secondary" href="/contact">
                   <BilingualText en="Start a conversation" bn="কথা বলুন" />
                 </Link>
-                <Link className="hero-tertiary" href="/divisions">
+                <Link className="hero-tertiary" href="/services">
                   <BilingualText en="See capabilities" bn="সক্ষমতা দেখুন" /><ArrowRight size={15} />
                 </Link>
               </div>
             </div>
-            <HeroInnovationVisual />
           </Container>
         </section>
 
@@ -117,8 +131,10 @@ export default async function Home() {
           </Container>
         </section>
 
+        <VerifiedStatisticsSection metrics={verifiedMetrics} />
+
         <section className="site-section">
-          <Container className="editorial-about">
+          <Container className="editorial-about editorial-about-single">
             <div className="editorial-about-copy">
               <SectionHeader
                 eyebrowEn="About RIT"
@@ -144,12 +160,6 @@ export default async function Home() {
               </div>
               <Link className="section-link" href="/about">Learn about RIT <ArrowRight size={15} /></Link>
             </div>
-            <VerifiedMetrics
-              projects={projects.length}
-              apps={apps.length}
-              articles={news.length}
-              research={achievements.length}
-            />
           </Container>
         </section>
 
@@ -176,22 +186,7 @@ export default async function Home() {
           </Container>
         </section>
 
-        {featuredProjects.length ? (
-          <section className="site-section">
-            <Container>
-              <div className="section-title-row">
-                <SectionHeader eyebrowEn="Featured projects" eyebrowBn="নির্বাচিত প্রকল্প" titleEn="Engineering work in focus." titleBn="প্রকৌশল কাজের নির্বাচিত অংশ।" />
-                <Link href="/projects">View all projects <ArrowRight size={15} /></Link>
-              </div>
-              <div className="featured-project-layout">
-                <ProjectCard item={featuredProjects[0]} priority variant="feature" />
-                <div className="featured-project-stack">
-                  {featuredProjects.slice(1).map((item) => <ProjectCard key={item.id} item={item} />)}
-                </div>
-              </div>
-            </Container>
-          </section>
-        ) : null}
+        <FeaturedMachinesSection projects={featuredMachines} />
 
         {featuredApps.length ? (
           <section className="site-section muted-section">
@@ -215,18 +210,9 @@ export default async function Home() {
           </Container>
         </section>
 
-        <section className="site-section dark-section">
-          <Container>
-            <SectionHeader
-              eyebrowEn="Research & innovation"
-              eyebrowBn="গবেষণা ও উদ্ভাবন"
-              titleEn="A disciplined path from problem to deployment."
-              titleBn="সমস্যা থেকে প্রয়োগ পর্যন্ত একটি সুশৃঙ্খল পথ।"
-            />
-            <ResearchJourney steps={processSteps} />
-            <Link className="site-button light" href="/research">Explore our approach <ArrowRight size={15} /></Link>
-          </Container>
-        </section>
+        <EngineeringGallerySection items={engineeringGallery} />
+
+        <ResearchJourneySection />
 
         {achievements.length ? (
           <section className="site-section">
@@ -252,6 +238,8 @@ export default async function Home() {
           </section>
         ) : null}
 
+        {siteSettings.partnersVisible ? <PartnersSection partners={partners} /> : null}
+
         {siteSettings.founderVisible ? <section className="site-section">
           <Container className="founder-editorial">
             <FounderVisual imageUrl={founder.imageUrl} name={founderName} />
@@ -268,17 +256,6 @@ export default async function Home() {
             </div>
           </Container>
         </section> : null}
-
-        {siteSettings.partnersVisible && partners.length ? (
-          <section className="site-section muted-section">
-            <Container>
-              <SectionHeader eyebrowEn="Published relationships" eyebrowBn="প্রকাশিত সহযোগিতা" titleEn="Organizations listed by RIT." titleBn="RIT কর্তৃক প্রকাশিত প্রতিষ্ঠান।" />
-              <div className="partner-list">
-                {partners.map((partner) => <span key={partner.id}>{partner.name}</span>)}
-              </div>
-            </Container>
-          </section>
-        ) : null}
 
         <ContactSection text={contactText} />
       </main>

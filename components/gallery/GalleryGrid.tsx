@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import type { GalleryItem } from "@/types/content";
 import TechnicalPlaceholder from "@/components/media/TechnicalPlaceholder";
+import ImageClassificationBadge from "@/components/ui/ImageClassificationBadge";
 import GalleryFilters from "./GalleryFilters";
 import GalleryLightbox from "./GalleryLightbox";
 
@@ -45,6 +46,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
                 ) : (
                   <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />
                 )}
+                <ImageClassificationBadge classification={item.imageClassification} />
               </div>
               <span><b>{item.captionEn || item.titleEn}</b><small>{item.category || "RIT media"}{item.mediaDate ? ` · ${new Date(item.mediaDate).toLocaleDateString("en-GB", { dateStyle: "medium" })}` : ""}</small></span>
             </button>

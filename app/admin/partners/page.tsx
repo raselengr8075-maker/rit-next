@@ -1,1 +1,2 @@
-import P from"@/components/admin/AdminResourcePage";export default function Page(){return <P title="Partners"/>}
+import P from "@/components/admin/AdminPhase2ResourcePage";
+export default function Page(){return <P title="Partners"/>}

@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Download, ExternalLink, X } from "lucide-rea
 import { useEffect, useRef } from "react";
 import type { GalleryItem } from "@/types/content";
 import TechnicalPlaceholder from "@/components/media/TechnicalPlaceholder";
+import ImageClassificationBadge from "@/components/ui/ImageClassificationBadge";
 
 export default function GalleryLightbox({ items, index, onClose, onMove }: { items: GalleryItem[]; index: number; onClose: () => void; onMove: (offset: number) => void }) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -59,7 +60,7 @@ export default function GalleryLightbox({ items, index, onClose, onMove }: { ite
           {item.imageUrl ? <Image unoptimized src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="95vw" /> : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />}
         </div>
         <figcaption>
-          <div><b>{item.captionEn || item.titleEn}</b><p>{item.altEn}</p></div>
+          <div><ImageClassificationBadge classification={item.imageClassification} /><b>{item.captionEn || item.titleEn}</b><p>{item.altEn}</p></div>
           <div>
             {item.relatedProjectSlug ? <Link href={`/projects/${item.relatedProjectSlug}`}>Related project <ExternalLink size={14} /></Link> : null}
             {item.downloadUrl ? <a href={item.downloadUrl} download>Download <Download size={14} /></a> : null}

@@ -96,7 +96,7 @@ export default function RootLayout({
       data-language="en"
       suppressHydrationWarning
     >
-      <body>
+      <body suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `

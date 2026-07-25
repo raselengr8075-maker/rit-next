@@ -1,1 +1,2 @@
-import{fallbackPartners}from"@/data/fallback-content";import{published}from"./repository";export const getPartners=()=>published("partners",fallbackPartners);
+import { getPublicPartners } from "@/lib/data/public-partners";
+export const getPartners = getPublicPartners;
