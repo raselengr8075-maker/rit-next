@@ -4,6 +4,7 @@ import "./phase3.css";
 import "./assistant-local.css";
 import "./admin-supabase.css";
 import "./corporate.css";
+import "./premium.css";
 
 import BackToTop from "@/components/site/BackToTop";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -44,6 +45,11 @@ export const metadata: Metadata = {
   creator: "Md. Rasel Ahmed",
 
   publisher: "Rasel Innovation & Technology",
+
+  icons: {
+    icon: "/rit-logo.png",
+    apple: "/rit-logo.png",
+  },
 
   alternates: {
     canonical: "/",
@@ -111,9 +117,9 @@ export default function RootLayout({
 
         <BackToTop />
 
-        <GoogleAnalytics
-          gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}
-        />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        ) : null}
       </body>
     </html>
   );

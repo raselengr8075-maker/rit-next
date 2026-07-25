@@ -1,1 +1,57 @@
-'use client';import Image from"next/image";import{useCallback,useMemo,useState}from"react";import type{GalleryItem}from"@/types/content";import GalleryFilters from"./GalleryFilters";import GalleryLightbox from"./GalleryLightbox";export default function GalleryGrid({items}:{items:GalleryItem[]}){const[category,setCategory]=useState("all"),[selected,setSelected]=useState<number|null>(null);const cats=[...new Set(items.map(x=>x.category).filter(Boolean))]as string[];const shown=useMemo(()=>category==="all"?items:items.filter(x=>x.category===category),[items,category]);const move=useCallback((n:number)=>setSelected(i=>i===null?null:(i+n+shown.length)%shown.length),[shown.length]);return <><GalleryFilters categories={cats} active={category} onChange={v=>{setCategory(v);setSelected(null)}}/><div className="gallery galleryPage">{shown.map((x,i)=><button className={`galleryItem g${i%6}`} key={x.id} onClick={()=>setSelected(i)} aria-label={`Open ${x.altEn}`}>{x.imageUrl?<Image unoptimized src={x.imageUrl} alt={x.altEn} fill sizes="(max-width: 720px) 50vw, 33vw"/>:<div className="gallery-placeholder" aria-hidden="true">Image placeholder</div>}<span>{x.captionEn||x.titleEn}</span></button>)}</div>{selected!==null&&<GalleryLightbox items={shown} index={selected} onClose={()=>setSelected(null)} onMove={move}/>}</>}
+"use client";
+
+import Image from "next/image";
+import { Search } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import type { GalleryItem } from "@/types/content";
+import TechnicalPlaceholder from "@/components/media/TechnicalPlaceholder";
+import GalleryFilters from "./GalleryFilters";
+import GalleryLightbox from "./GalleryLightbox";
+
+export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
+  const [category, setCategory] = useState("all");
+  const [query, setQuery] = useState("");
+  const [selected, setSelected] = useState<number | null>(null);
+  const categories = [...new Set(items.map((item) => item.category).filter(Boolean))] as string[];
+  const shown = useMemo(() => {
+    const needle = query.trim().toLocaleLowerCase();
+    return items.filter((item) => {
+      const inCategory = category === "all" || item.category === category;
+      const inSearch = !needle || `${item.titleEn} ${item.titleBn} ${item.captionEn || ""} ${item.captionBn || ""}`.toLocaleLowerCase().includes(needle);
+      return inCategory && inSearch;
+    });
+  }, [items, category, query]);
+  const move = useCallback((offset: number) => {
+    setSelected((index) => index === null || !shown.length ? null : (index + offset + shown.length) % shown.length);
+  }, [shown.length]);
+
+  return (
+    <>
+      <div className="gallery-toolbar">
+        <GalleryFilters categories={categories} active={category} onChange={(value) => { setCategory(value); setSelected(null); }} />
+        <label className="gallery-search">
+          <Search size={17} aria-hidden="true" />
+          <span className="srOnly">Search gallery</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search published media" />
+        </label>
+      </div>
+      {shown.length ? (
+        <div className="premium-gallery">
+          {shown.map((item, index) => (
+            <button key={item.id} onClick={() => setSelected(index)} aria-label={`Open ${item.altEn || item.titleEn}`}>
+              <div className="premium-gallery-media">
+                {item.imageUrl ? (
+                  <Image unoptimized src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="(max-width: 720px) 100vw, 33vw" />
+                ) : (
+                  <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />
+                )}
+              </div>
+              <span><b>{item.captionEn || item.titleEn}</b><small>{item.category || "RIT media"}{item.mediaDate ? ` · ${new Date(item.mediaDate).toLocaleDateString("en-GB", { dateStyle: "medium" })}` : ""}</small></span>
+            </button>
+          ))}
+        </div>
+      ) : <p className="site-empty">No published media matches this search.</p>}
+      {selected !== null ? <GalleryLightbox items={shown} index={selected} onClose={() => setSelected(null)} onMove={move} /> : null}
+    </>
+  );
+}

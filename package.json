@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "typecheck": "tsc --noEmit",
     "start": "next start",
     "check:supabase": "node --env-file-if-exists=.env.local scripts/check-supabase-env.mjs",
     "test:supabase": "node --env-file-if-exists=.env.local scripts/test-supabase-connection.mjs"

@@ -1,1 +1,72 @@
-'use client';import Image from"next/image";import{useEffect,useRef}from"react";import type{GalleryItem}from"@/types/content";export default function GalleryLightbox({items,index,onClose,onMove}:{items:GalleryItem[];index:number;onClose:()=>void;onMove:(n:number)=>void}){const closeRef=useRef<HTMLButtonElement>(null);useEffect(()=>{closeRef.current?.focus();const k=(e:KeyboardEvent)=>{if(e.key==="Escape")onClose();if(e.key==="ArrowRight")onMove(1);if(e.key==="ArrowLeft")onMove(-1)};addEventListener("keydown",k);document.body.style.overflow="hidden";return()=>{removeEventListener("keydown",k);document.body.style.overflow=""}},[onClose,onMove]);const x=items[index];return <div className="lightbox" role="dialog" aria-modal="true" aria-label={x.altEn}><button ref={closeRef} onClick={onClose} aria-label="Close">×</button><button onClick={()=>onMove(-1)} aria-label="Previous image">‹</button><div className="lightboxImage">{x.imageUrl?<Image unoptimized src={x.imageUrl} alt={x.altEn} fill sizes="90vw"/>:<div className="placeholderMedia" role="img" aria-label={`${x.altEn} placeholder`}/>}</div><button onClick={()=>onMove(1)} aria-label="Next image">›</button><p>{x.captionEn||x.titleEn}</p></div>}
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Download, ExternalLink, X } from "lucide-react";
+import { useEffect, useRef } from "react";
+import type { GalleryItem } from "@/types/content";
+import TechnicalPlaceholder from "@/components/media/TechnicalPlaceholder";
+
+export default function GalleryLightbox({ items, index, onClose, onMove }: { items: GalleryItem[]; index: number; onClose: () => void; onMove: (offset: number) => void }) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const touchStart = useRef<number | null>(null);
+  const item = items[index];
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowRight") onMove(1);
+      if (event.key === "ArrowLeft") onMove(-1);
+      if (event.key === "Tab" && dialogRef.current) {
+        const controls = [...dialogRef.current.querySelectorAll<HTMLElement>("button,a[href]")];
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    addEventListener("keydown", onKey);
+    document.body.classList.add("navigation-open");
+    return () => {
+      removeEventListener("keydown", onKey);
+      document.body.classList.remove("navigation-open");
+      previouslyFocused?.focus();
+    };
+  }, [onClose, onMove]);
+
+  return (
+    <div
+      ref={dialogRef}
+      className="premium-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.altEn || item.titleEn}
+      onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
+      onTouchEnd={(event) => {
+        if (touchStart.current === null) return;
+        const distance = (event.changedTouches[0]?.clientX ?? touchStart.current) - touchStart.current;
+        if (Math.abs(distance) > 48) onMove(distance < 0 ? 1 : -1);
+        touchStart.current = null;
+      }}
+    >
+      <button ref={closeRef} className="lightbox-close" onClick={onClose} aria-label="Close gallery"><X /></button>
+      <button className="lightbox-prev" onClick={() => onMove(-1)} aria-label="Previous image"><ChevronLeft /></button>
+      <figure>
+        <div className="lightbox-stage">
+          {item.imageUrl ? <Image unoptimized src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="95vw" /> : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />}
+        </div>
+        <figcaption>
+          <div><b>{item.captionEn || item.titleEn}</b><p>{item.altEn}</p></div>
+          <div>
+            {item.relatedProjectSlug ? <Link href={`/projects/${item.relatedProjectSlug}`}>Related project <ExternalLink size={14} /></Link> : null}
+            {item.downloadUrl ? <a href={item.downloadUrl} download>Download <Download size={14} /></a> : null}
+          </div>
+        </figcaption>
+      </figure>
+      <button className="lightbox-next" onClick={() => onMove(1)} aria-label="Next image"><ChevronRight /></button>
+    </div>
+  );
+}
