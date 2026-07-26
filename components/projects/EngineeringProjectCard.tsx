@@ -27,7 +27,7 @@ export default function EngineeringProjectCard({ item, lead = false }: { item: P
             sizes={lead ? "(max-width: 760px) 100vw, 64vw" : "(max-width: 760px) 100vw, 32vw"}
             onError={() => setFailed(true)}
           />
-        ) : <TechnicalPlaceholder kind="prototype" label={`${item.titleEn} — design representation`} />}
+        ) : <TechnicalPlaceholder kind="prototype" label={`${item.titleEn} — design representation`} labelBn={`${item.titleBn || item.titleEn} — নকশা উপস্থাপনা`} />}
         <ImageClassificationBadge classification={item.imageClassification} />
       </div>
       <div className="engineering-project-copy">
@@ -42,8 +42,8 @@ export default function EngineeringProjectCard({ item, lead = false }: { item: P
           {item.year ? <div><dt><BilingualText en="Year" bn="বছর" /></dt><dd>{item.year}</dd></div> : null}
         </dl>
         {(galleryCount > 0 || documentCount > 0) ? <div className="engineering-evidence">
-          {galleryCount > 0 ? <span><Images size={14} />{galleryCount} media</span> : null}
-          {documentCount > 0 ? <span><FileText size={14} />{documentCount} document{documentCount === 1 ? "" : "s"}</span> : null}
+          {galleryCount > 0 ? <span><Images size={14} /><BilingualText en={`${galleryCount} media`} bn={`${galleryCount} মিডিয়া`} /></span> : null}
+          {documentCount > 0 ? <span><FileText size={14} /><BilingualText en={`${documentCount} document${documentCount === 1 ? "" : "s"}`} bn={`${documentCount} নথি`} /></span> : null}
         </div> : null}
         <Link href={`/projects/${item.slug}`}><BilingualText en="View project" bn="প্রকল্প দেখুন" /><ArrowUpRight size={17} /></Link>
       </div>

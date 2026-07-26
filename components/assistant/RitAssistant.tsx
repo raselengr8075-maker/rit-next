@@ -36,6 +36,14 @@ export default function RitAssistant() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const updateLanguage = () => setLang(document.documentElement.dataset.language === "bn" ? "bn" : "en");
+    updateLanguage();
+    const observer = new MutationObserver(updateLanguage);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-language"] });
+    return () => observer.disconnect();
+  }, []);
+
   const close = useCallback(() => {
     setOpen(false);
     setMinimized(false);
@@ -140,7 +148,7 @@ export default function RitAssistant() {
         aria-label="Open RIT Smart Assistant"
       >
         <span className="assistant-avatar"><Bot size={21} /></span>
-        <span><b>RIT Smart</b><small>Local assistant</small></span>
+        <span><b>RIT Smart</b><small>{lang === "bn" ? "স্থানীয় সহকারী" : "Local assistant"}</small></span>
       </button>
       {open ? (
         <section
@@ -155,8 +163,8 @@ export default function RitAssistant() {
             <div>
               <span className="assistant-avatar"><Bot size={19} /></span>
               <div>
-                <b id="assistant-title">RIT Smart Assistant</b>
-                <small>Local · deterministic · private</small>
+                <b id="assistant-title">{lang === "bn" ? "RIT স্মার্ট সহকারী" : "RIT Smart Assistant"}</b>
+                <small>{lang === "bn" ? "স্থানীয় · নিয়মভিত্তিক · ব্যক্তিগত" : "Local · deterministic · private"}</small>
               </div>
             </div>
             <div>
@@ -214,7 +222,7 @@ export default function RitAssistant() {
                   }}
                 />
                 <button disabled={loading} aria-label="Send question"><Send size={18} /><span>{lang === "bn" ? "পাঠান" : "Send"}</span></button>
-                <small>Enter to send · Shift+Enter for a new line</small>
+                <small>{lang === "bn" ? "পাঠাতে Enter · নতুন লাইনের জন্য Shift+Enter" : "Enter to send · Shift+Enter for a new line"}</small>
               </form>
             </>
           ) : null}

@@ -10,17 +10,17 @@ const groups = [
   {
     title: "Company",
     titleBn: "প্রতিষ্ঠান",
-    links: [["About RIT", "/about"], ["Founder", "/founder"], ["Achievements", "/achievements"], ["Contact", "/contact"]],
+    links: [["About RIT", "RIT পরিচিতি", "/about"], ["Founder", "প্রতিষ্ঠাতা", "/founder"], ["Achievements", "অর্জন", "/achievements"], ["Contact", "যোগাযোগ", "/contact"]],
   },
   {
     title: "Work",
     titleBn: "কাজ",
-    links: [["Divisions", "/divisions"], ["Services", "/services"], ["Projects", "/projects"], ["Applications", "/apps"], ["Research", "/research"]],
+    links: [["Divisions", "বিভাগ", "/divisions"], ["Services", "সেবা", "/services"], ["Projects", "প্রকল্প", "/projects"], ["Applications", "অ্যাপ্লিকেশন", "/apps"], ["Research", "গবেষণা", "/research"]],
   },
   {
     title: "Resources",
     titleBn: "রিসোর্স",
-    links: [["News & Insights", "/news"], ["Media & Gallery", "/gallery"], ["Downloads", "/resources"], ["Search", "/search"]],
+    links: [["News & Insights", "সংবাদ ও অন্তর্দৃষ্টি", "/news"], ["Media & Gallery", "মিডিয়া ও গ্যালারি", "/gallery"], ["Downloads", "ডাউনলোড", "/resources"], ["Search", "অনুসন্ধান", "/search"]],
   },
 ];
 
@@ -67,19 +67,19 @@ export default async function CorporateFooter() {
             {groups.map((group) => (
               <div key={group.title}>
                 <h2><BilingualText en={group.title} bn={group.titleBn} /></h2>
-                {group.links.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}
+                {group.links.map(([labelEn, labelBn, href]) => <Link key={href} href={href}><BilingualText en={labelEn} bn={labelBn} /></Link>)}
               </div>
             ))}
           </div>
           <div className="footer-bottom">
-            <span>© {new Date().getFullYear()} Rasel Innovation & Technology</span>
+            <span>© {new Date().getFullYear()} <BilingualText en="Rasel Innovation & Technology" bn="রাসেল ইনোভেশন অ্যান্ড টেকনোলজি" /></span>
             <div>
-              <Link href="/privacy">Privacy</Link>
-              <Link href="/terms">Terms</Link>
-              <Link href="/accessibility">Accessibility</Link>
-              <Link href="/sitemap.xml">Sitemap</Link>
+              <Link href="/privacy"><BilingualText en="Privacy" bn="গোপনীয়তা" /></Link>
+              <Link href="/terms"><BilingualText en="Terms" bn="শর্তাবলি" /></Link>
+              <Link href="/accessibility"><BilingualText en="Accessibility" bn="প্রবেশগম্যতা" /></Link>
+              <Link href="/sitemap.xml"><BilingualText en="Sitemap" bn="সাইটম্যাপ" /></Link>
             </div>
-            <span>Built and maintained by RIT</span>
+            <span><BilingualText en="Built and maintained by RIT" bn="RIT কর্তৃক নির্মিত ও রক্ষণাবেক্ষিত" /></span>
           </div>
         </Container>
       </footer>

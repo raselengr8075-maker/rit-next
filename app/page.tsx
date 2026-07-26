@@ -60,6 +60,33 @@ const trustItems = [
   ["Mobile Applications", "মোবাইল অ্যাপ্লিকেশন"],
 ] as const;
 
+const principles = [
+  {
+    titleEn: "Vision",
+    titleBn: "ভিশন",
+    copyEn: "Make practical progress more accessible through technology.",
+    copyBn: "প্রযুক্তির মাধ্যমে বাস্তব অগ্রগতিকে আরও সহজলভ্য করা।",
+  },
+  {
+    titleEn: "Mission",
+    titleBn: "মিশন",
+    copyEn: "Research, design and develop around genuine needs.",
+    copyBn: "বাস্তব চাহিদার জন্য গবেষণা, নকশা ও উন্নয়ন করা।",
+  },
+  {
+    titleEn: "Approach",
+    titleBn: "কাজের ধরন",
+    copyEn: "Prioritize evidence, iteration and clear documentation.",
+    copyBn: "প্রমাণ, পুনরাবৃত্তি ও স্পষ্ট নথিকে অগ্রাধিকার দেওয়া।",
+  },
+  {
+    titleEn: "Bangladesh",
+    titleBn: "বাংলাদেশ",
+    copyEn: "Build internationally minded work from local realities.",
+    copyBn: "স্থানীয় বাস্তবতা থেকে আন্তর্জাতিক মানের কাজ গড়া।",
+  },
+] as const;
+
 export default async function Home() {
   const [apps, news, founder, achievements, siteSettings, verifiedMetrics, featuredMachines, engineeringGallery, partners] = await Promise.all([
     getApps(),
@@ -149,16 +176,14 @@ export default async function Home() {
                 />
               </p>
               <div className="principle-grid">
-                {[
-                  ["Vision", "প্রযুক্তির মাধ্যমে বাস্তব অগ্রগতিকে আরও সহজলভ্য করা।"],
-                  ["Mission", "বাস্তব চাহিদার জন্য গবেষণা, নকশা ও উন্নয়ন করা।"],
-                  ["Approach", "প্রমাণ, পুনরাবৃত্তি ও স্পষ্ট নথিকে অগ্রাধিকার দেওয়া।"],
-                  ["Bangladesh", "স্থানীয় বাস্তবতা থেকে আন্তর্জাতিক মানের কাজ গড়া।"],
-                ].map(([title, copy]) => (
-                  <article key={title}><b>{title}</b><p>{copy}</p></article>
+                {principles.map((item) => (
+                  <article key={item.titleEn}>
+                    <b><BilingualText en={item.titleEn} bn={item.titleBn} /></b>
+                    <p><BilingualText en={item.copyEn} bn={item.copyBn} /></p>
+                  </article>
                 ))}
               </div>
-              <Link className="section-link" href="/about">Learn about RIT <ArrowRight size={15} /></Link>
+              <Link className="section-link" href="/about"><BilingualText en="Learn about RIT" bn="RIT সম্পর্কে জানুন" /> <ArrowRight size={15} /></Link>
             </div>
           </Container>
         </section>
@@ -193,9 +218,9 @@ export default async function Home() {
             <Container>
               <div className="section-title-row">
                 <SectionHeader eyebrowEn="Digital products" eyebrowBn="ডিজিটাল পণ্য" titleEn="Focused applications for useful everyday work." titleBn="দৈনন্দিন কার্যকর কাজের জন্য অ্যাপ্লিকেশন।" />
-                <Link href="/apps">View all applications <ArrowRight size={15} /></Link>
+                <Link href="/apps"><BilingualText en="View all applications" bn="সব অ্যাপ্লিকেশন দেখুন" /> <ArrowRight size={15} /></Link>
               </div>
-              <div className="card-grid three-cols">
+              <div className="card-grid three-cols homepage-app-grid">
                 {featuredApps.map((item) => <AppCard key={item.id} item={item} />)}
               </div>
             </Container>
@@ -206,7 +231,7 @@ export default async function Home() {
           <Container>
             <SectionHeader eyebrowEn="Services" eyebrowBn="সেবা" titleEn="Focused support from concept to delivery." titleBn="ধারণা থেকে বাস্তবায়ন পর্যন্ত লক্ষ্যভিত্তিক সহায়তা।" />
             <div className="card-grid three-cols">{services.slice(0, 6).map((item) => <ServiceCard key={item.slug} item={item} />)}</div>
-            <Link className="section-link" href="/services">View all services <ArrowRight size={15} /></Link>
+            <Link className="section-link" href="/services"><BilingualText en="View all services" bn="সব সেবা দেখুন" /> <ArrowRight size={15} /></Link>
           </Container>
         </section>
 
@@ -219,7 +244,7 @@ export default async function Home() {
             <Container>
               <SectionHeader eyebrowEn="Development journey" eyebrowBn="উন্নয়নের যাত্রা" titleEn="Published milestones, presented with context." titleBn="প্রকাশিত মাইলফলক, যথাযথ প্রেক্ষাপটে।" />
               <EditorialTimeline items={achievements.slice(0, 8)} />
-              <Link className="section-link" href="/achievements">View the complete journey <ArrowRight size={15} /></Link>
+              <Link className="section-link" href="/achievements"><BilingualText en="View the complete journey" bn="সম্পূর্ণ যাত্রা দেখুন" /> <ArrowRight size={15} /></Link>
             </Container>
           </section>
         ) : null}
@@ -229,7 +254,7 @@ export default async function Home() {
             <Container>
               <div className="section-title-row">
                 <SectionHeader eyebrowEn="News & insights" eyebrowBn="সংবাদ ও অন্তর্দৃষ্টি" titleEn="Latest thinking and development notes." titleBn="সর্বশেষ ভাবনা ও উন্নয়ন নোট।" />
-                <Link href="/news">All news <ArrowRight size={15} /></Link>
+                <Link href="/news"><BilingualText en="All news" bn="সব সংবাদ" /> <ArrowRight size={15} /></Link>
               </div>
               <div className="news-editorial-grid">
                 {news.slice(0, 3).map((item, index) => <NewsCard key={item.id} item={item} lead={index === 0} />)}

@@ -21,7 +21,7 @@ export default function EngineeringGalleryCard({ item, featured, onOpen }: { ite
             sizes={featured ? "(max-width: 760px) 100vw, 58vw" : "(max-width: 760px) 100vw, 30vw"}
             onError={() => setFailed(true)}
           />
-        ) : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — design representation`} />}
+        ) : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — design representation`} labelBn={`${item.titleBn || item.titleEn} — নকশা উপস্থাপনা`} />}
         <span className="engineering-gallery-category">{item.category || "Engineering"}</span>
         <ImageClassificationBadge classification={item.imageClassification} />
         <span className="engineering-gallery-caption">
