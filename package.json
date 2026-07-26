@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "start": "next start",
     "check:supabase": "node --env-file-if-exists=.env.local scripts/check-supabase-env.mjs",
@@ -24,5 +25,9 @@
     "resend": "^6.17.2",
     "typescript": "^5.9.0",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10"
   }
 }

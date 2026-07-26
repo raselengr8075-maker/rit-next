@@ -42,7 +42,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
             <button key={item.id} onClick={() => setSelected(index)} aria-label={`Open ${item.altEn || item.titleEn}`}>
               <div className="premium-gallery-media">
                 {item.imageUrl ? (
-                  <Image unoptimized src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="(max-width: 720px) 100vw, 33vw" />
+                  <Image src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="(max-width: 720px) 100vw, 33vw" loading="lazy" placeholder={item.blurDataUrl ? "blur" : "empty"} blurDataURL={item.blurDataUrl} />
                 ) : (
                   <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />
                 )}

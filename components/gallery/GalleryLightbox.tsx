@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Download, ExternalLink, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, Download, ExternalLink, Maximize2, Minus, Plus, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { GalleryItem } from "@/types/content";
 import TechnicalPlaceholder from "@/components/media/TechnicalPlaceholder";
 import ImageClassificationBadge from "@/components/ui/ImageClassificationBadge";
@@ -12,15 +12,22 @@ export default function GalleryLightbox({ items, index, onClose, onMove }: { ite
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef<number | null>(null);
+  const [zoom, setZoom] = useState(1);
   const item = items[index];
+  const move = useCallback((offset: number) => {
+    setZoom(1);
+    onMove(offset);
+  }, [onMove]);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
     closeRef.current?.focus();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
-      if (event.key === "ArrowRight") onMove(1);
-      if (event.key === "ArrowLeft") onMove(-1);
+      if (event.key === "ArrowRight") move(1);
+      if (event.key === "ArrowLeft") move(-1);
+      if (event.key === "+" || event.key === "=") setZoom((value) => Math.min(3, value + .25));
+      if (event.key === "-") setZoom((value) => Math.max(1, value - .25));
       if (event.key === "Tab" && dialogRef.current) {
         const controls = [...dialogRef.current.querySelectorAll<HTMLElement>("button,a[href]")];
         const first = controls[0];
@@ -36,7 +43,7 @@ export default function GalleryLightbox({ items, index, onClose, onMove }: { ite
       document.body.classList.remove("navigation-open");
       previouslyFocused?.focus();
     };
-  }, [onClose, onMove]);
+  }, [onClose, move]);
 
   return (
     <div
@@ -49,25 +56,45 @@ export default function GalleryLightbox({ items, index, onClose, onMove }: { ite
       onTouchEnd={(event) => {
         if (touchStart.current === null) return;
         const distance = (event.changedTouches[0]?.clientX ?? touchStart.current) - touchStart.current;
-        if (Math.abs(distance) > 48) onMove(distance < 0 ? 1 : -1);
+        if (Math.abs(distance) > 48) move(distance < 0 ? 1 : -1);
         touchStart.current = null;
       }}
     >
-      <button ref={closeRef} className="lightbox-close" onClick={onClose} aria-label="Close gallery"><X /></button>
-      <button className="lightbox-prev" onClick={() => onMove(-1)} aria-label="Previous image"><ChevronLeft /></button>
+      <div className="lightbox-tools">
+        <button ref={closeRef} onClick={onClose} aria-label="Close gallery"><X /></button>
+        <button onClick={() => setZoom((value) => Math.max(1, value - .25))} aria-label="Zoom out"><Minus /></button>
+        <button onClick={() => setZoom((value) => Math.min(3, value + .25))} aria-label="Zoom in"><Plus /></button>
+        <button onClick={() => void dialogRef.current?.requestFullscreen?.()} aria-label="View fullscreen"><Maximize2 /></button>
+      </div>
+      <button className="lightbox-prev" onClick={() => move(-1)} aria-label="Previous image"><ChevronLeft /></button>
       <figure>
         <div className="lightbox-stage">
-          {item.imageUrl ? <Image unoptimized src={item.imageUrl} alt={item.altEn || item.titleEn} fill sizes="95vw" /> : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />}
+          {item.imageUrl ? (
+            <Image
+              src={item.imageUrl}
+              alt={item.altEn || item.titleEn}
+              fill
+              sizes="95vw"
+              placeholder={item.blurDataUrl ? "blur" : "empty"}
+              blurDataURL={item.blurDataUrl}
+              style={{ transform: `scale(${zoom})` }}
+            />
+          ) : <TechnicalPlaceholder kind="gallery" label={`${item.titleEn} — image unavailable`} />}
         </div>
         <figcaption>
-          <div><ImageClassificationBadge classification={item.imageClassification} /><b>{item.captionEn || item.titleEn}</b><p>{item.altEn}</p></div>
+          <div>
+            <ImageClassificationBadge classification={item.imageClassification} />
+            <b>{item.captionEn || item.titleEn}</b>
+            <p>{item.altEn}</p>
+            {item.imageCredit ? <small>Credit: {item.imageCredit}</small> : null}
+          </div>
           <div>
             {item.relatedProjectSlug ? <Link href={`/projects/${item.relatedProjectSlug}`}>Related project <ExternalLink size={14} /></Link> : null}
             {item.downloadUrl ? <a href={item.downloadUrl} download>Download <Download size={14} /></a> : null}
           </div>
         </figcaption>
       </figure>
-      <button className="lightbox-next" onClick={() => onMove(1)} aria-label="Next image"><ChevronRight /></button>
+      <button className="lightbox-next" onClick={() => move(1)} aria-label="Next image"><ChevronRight /></button>
     </div>
   );
 }

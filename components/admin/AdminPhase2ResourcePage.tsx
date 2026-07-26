@@ -4,6 +4,7 @@ import SetupRequired from "./SetupRequired";
 import AdminShell from "./AdminShell";
 import ContentManager from "./ContentManager";
 import Phase2MetadataManager from "./Phase2MetadataManager";
+import ProjectPortfolioManager from "./ProjectPortfolioManager";
 
 const config = {
   Projects: { table: "projects" as const, description: "Manage RIT engineering and agricultural project pages.", folder: "projects" },
@@ -21,6 +22,7 @@ export default async function AdminPhase2ResourcePage({ title }: { title: keyof 
       {error ? <div className="adminError">Records could not be loaded. Apply schema.sql and the Phase 2 migration.</div> : <>
         <ContentManager table={resource.table} title={title} description={resource.description} initialRows={(data || []) as never[]} folder={resource.folder} />
         <Phase2MetadataManager kind={resource.table} rows={(data || []) as never[]} />
+        {resource.table === "projects" ? <ProjectPortfolioManager rows={(data || []) as never[]} /> : null}
       </>}
     </AdminShell>
   );

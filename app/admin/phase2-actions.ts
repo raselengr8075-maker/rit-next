@@ -22,6 +22,8 @@ const gallerySchema = z.object({
   caption_bn: z.string().trim().max(500),
   alt_en: z.string().trim().min(3).max(300),
   alt_bn: z.string().trim().max(300),
+  image_credit: z.string().trim().max(200),
+  blur_data_url: z.string().trim().max(5000),
   image_classification: classification,
   related_project_slug: z.string().trim().max(120),
   featured_on_home: z.boolean(),

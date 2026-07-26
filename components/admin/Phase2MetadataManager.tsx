@@ -34,6 +34,8 @@ export default function Phase2MetadataManager({ kind, rows }: { kind: "projects"
       caption_bn: values.caption_bn || "",
       alt_en: values.alt_en || "",
       alt_bn: values.alt_bn || "",
+      image_credit: values.image_credit || "",
+      blur_data_url: values.blur_data_url || "",
       image_classification: values.image_classification,
       related_project_slug: values.related_project_slug || "",
       featured_on_home: values.featured_on_home === "on",
@@ -73,7 +75,7 @@ export default function Phase2MetadataManager({ kind, rows }: { kind: "projects"
             <label className="checkField"><input name="featured_on_home" type="checkbox" defaultChecked={Boolean(editing.featured_on_home)} />Featured on homepage</label>
           </> : kind === "gallery_items" ? <>
             <div className="fieldGrid"><label>Category<input name="category" required defaultValue={String(editing.category || "")} /></label><label>Display order<input name="display_order" type="number" defaultValue={String(editing.display_order || editing.sort_order || 0)} /></label><label>Image classification<select name="image_classification" defaultValue={String(editing.image_classification || "Design representation")}>{classifications.map((value) => <option key={value}>{value}</option>)}</select></label><label>Related project slug<input name="related_project_slug" defaultValue={String(editing.related_project_slug || "")} /></label></div>
-            <label>English caption<textarea name="caption_en" rows={2} defaultValue={String(editing.caption_en || "")} /></label><label>Bangla caption<textarea name="caption_bn" rows={2} defaultValue={String(editing.caption_bn || "")} /></label><label>English alt text<input name="alt_en" required defaultValue={String(editing.alt_en || "")} /></label><label>Bangla alt text<input name="alt_bn" defaultValue={String(editing.alt_bn || "")} /></label>
+            <label>English caption<textarea name="caption_en" rows={2} defaultValue={String(editing.caption_en || "")} /></label><label>Bangla caption<textarea name="caption_bn" rows={2} defaultValue={String(editing.caption_bn || "")} /></label><label>English alt text<input name="alt_en" required defaultValue={String(editing.alt_en || "")} /></label><label>Bangla alt text<input name="alt_bn" defaultValue={String(editing.alt_bn || "")} /></label><div className="fieldGrid"><label>Image credit<input name="image_credit" defaultValue={String(editing.image_credit || "")} /></label><label>Blur data URL<input name="blur_data_url" placeholder="Optional base64 data URL" defaultValue={String(editing.blur_data_url || "")} /></label></div>
             <div className="fieldGrid"><label className="checkField"><input name="featured_on_home" type="checkbox" defaultChecked={Boolean(editing.featured_on_home)} />Featured on homepage</label><label className="checkField"><input name="published" type="checkbox" defaultChecked={Boolean(editing.published)} />Published</label></div>
           </> : <>
             <div className="fieldGrid"><label>Name<input name="name" required defaultValue={String(editing.name || "")} /></label><label>Relationship type<input name="relationship_type" required defaultValue={String(editing.relationship_type || "")} /></label><label>Display order<input name="display_order" type="number" defaultValue={String(editing.display_order || editing.sort_order || 0)} /></label></div>
