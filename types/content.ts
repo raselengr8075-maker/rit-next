@@ -6,7 +6,7 @@ export interface GalleryItem extends BaseContent{altEn:string;altBn:string;capti
 export interface NewsArticle extends BaseContent{author?:string;publishedAt?:string}
 export interface FounderProfile extends BaseContent{name:string;roleEn:string;roleBn:string;expertise?:string[];philosophyEn?:string;philosophyBn?:string;careerOverviewEn?:string;careerOverviewBn?:string;researchInterests?:string[];skills?:string[];education?:string[];experience?:string[];awards?:string[];professionalLinks?:string[];cvUrl?:string}
 export interface Achievement extends BaseContent{year?:number;icon?:string;sourceUrl?:string;eventDate?:string}
-export interface TimelineEvent extends BaseContent{date?:string;sourceUrl?:string}
+export interface TimelineEvent extends BaseContent{date?:string;eventDate?:string;sourceUrl?:string}
 export interface Partner extends BaseContent{name:string;logoUrl?:string;websiteUrl?:string;partnerType?:string;relationshipType?:string;isApproved?:boolean;isVisible?:boolean;displayOrder?:number}
 export interface VerifiedMetric{id:string;labelEn:string;labelBn:string;numericValue:number;suffix?:string;sourceNote:string;iconKey?:string;displayOrder:number}
 export interface Resource extends BaseContent{fileUrl?:string;externalUrl?:string;thumbnailUrl?:string}
